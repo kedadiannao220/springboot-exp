@@ -12,6 +12,7 @@
     <modules>
         <module>springboot-rabbit</module>
         <module>springboot-rabbit-gather</module>
+        <module>springboot-rabbit-webstomp</module>
     </modules>
 
 
