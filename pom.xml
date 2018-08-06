@@ -14,6 +14,7 @@
         <module>springboot-rabbit-gather</module>
         <module>springboot-rabbit-webstomp</module>
         <module>springboot-akka</module>
+        <module>springbootfreemarker</module>
     </modules>
 
 

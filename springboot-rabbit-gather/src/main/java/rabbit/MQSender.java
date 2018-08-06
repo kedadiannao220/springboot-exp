@@ -1,5 +1,6 @@
 package rabbit;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.DirectExchange;
@@ -9,7 +10,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * MQ 相关服务，主要是发消息
@@ -35,6 +37,15 @@ public class MQSender {
     public void directSend(JobMsgEvent jobMsgEvent) {
         rabbitTemplate.convertAndSend(directExchange.getName(), MQConstant.DEFAULT_ROUTINT_KEY,
             jobMsgEvent);
+
+        logger.info("-------------directSend : " + JSON.toJSONString(jobMsgEvent, true));
+    }
+
+    public void directSendListT(JobMsgEvent jobMsgEvent) {
+        List<JobMsgEvent> jobMsgEventList = Arrays.asList(jobMsgEvent);
+
+        rabbitTemplate.convertAndSend(directExchange.getName(), MQConstant.DEFAULT_ROUTINT_KEY,
+            jobMsgEventList);
 
         logger.info("-------------directSend : " + JSON.toJSONString(jobMsgEvent, true));
     }

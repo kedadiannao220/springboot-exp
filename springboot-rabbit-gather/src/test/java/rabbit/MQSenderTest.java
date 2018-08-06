@@ -24,7 +24,8 @@ public class MQSenderTest {
 
     @Test
     public void testDirectSend() {
-        mqSender.directSend(getJobMsgEvent());
+        //        mqSender.directSend(getJobMsgEvent());
+        mqSender.directSendListT(getJobMsgEvent());
     }
 
     @Test
@@ -49,4 +50,5 @@ public class MQSenderTest {
         jobMsgEvent.setParam(map);
         return jobMsgEvent;
     }
+
 }

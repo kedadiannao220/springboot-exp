@@ -25,6 +25,8 @@ public class MQConsumer {
     @RabbitListener(queues = "${rabbitmq.queue.direct}")
     public void directReceive(Message msg) {
 
+        //        Object obj = JSON.parseObject(msg.getBody(),Object.class);
+
         Object obj = SerializableUtil.toObject(msg.getBody());
 
         logger.info("-------------directReceive : " + JSON.toJSONString(obj, true));

@@ -1,8 +1,10 @@
 package com.pgy.direct;
 
 import com.pgy.RabbitConstant;
-import org.springframework.amqp.core.*;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -14,17 +16,24 @@ import org.springframework.context.annotation.Bean;
 @SpringBootConfiguration
 public class DirectConfig {
 
-    @Value("${rabbitmq.queue.name}")
-    private String annotationQueueName;
-
     @Bean
     public Queue directQueue() {
         return new Queue(RabbitConstant.DIRECT_QUEUE);
     }
 
     @Bean
-    public Queue annotationQueue() {
-        return new Queue(annotationQueueName);
+    Queue hash0Queue() {
+        return new Queue(RabbitConstant.HASH_0_QUEUE);
+    }
+
+    @Bean
+    Queue hash1Queue() {
+        return new Queue(RabbitConstant.HASH_1_QUEUE);
+    }
+
+    @Bean
+    Queue hash2Queue() {
+        return new Queue(RabbitConstant.HASH_2_QUEUE);
     }
 
     @Bean
@@ -38,9 +47,21 @@ public class DirectConfig {
     }
 
     @Bean
-    public Binding directBuildBinding2(Queue annotationQueue, DirectExchange directExchange) {
-        return BindingBuilder.bind(annotationQueue).to(directExchange)
-            .with(RabbitConstant.ROUTING_KEY);
+    public Binding directBindHash0Queue(Queue hash0Queue, DirectExchange directExchange) {
+        return BindingBuilder.bind(hash0Queue).to(directExchange)
+            .with(RabbitConstant.HASH_0_ROUTING);
+    }
+
+    @Bean
+    public Binding directBindHash1Queue(Queue hash1Queue, DirectExchange directExchange) {
+        return BindingBuilder.bind(hash1Queue).to(directExchange)
+            .with(RabbitConstant.HASH_1_ROUTING);
+    }
+
+    @Bean
+    public Binding directBindHash2Queue(Queue hash2Queue, DirectExchange directExchange) {
+        return BindingBuilder.bind(hash2Queue).to(directExchange)
+            .with(RabbitConstant.HASH_2_ROUTING);
     }
 
 }

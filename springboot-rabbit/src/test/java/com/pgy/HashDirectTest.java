@@ -16,31 +16,25 @@ import java.util.UUID;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class DirectTest {
+public class HashDirectTest {
 
     @Autowired
-    private DirectSend producer;
+    private DirectSend directSend;
 
     @Test
     public void directExchangeSend() {
-        producer.directExchangeSend();
+        directSend.directExchangeSend();
     }
 
-    /**
-     * 1kw条数据
-     */
     @Test
     public void directSend() {
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 1000000; i++) {
-            sb.append(UUID.randomUUID().toString());
-            sb.append(",");
+        int i = 5;
+        while (i > 0) {
+            String str = UUID.randomUUID().toString();
+            directSend.hashMsgSender(str, str);
+            i--;
         }
-        sb.deleteCharAt(sb.length()-1);
-        String testStr = sb.toString();
 
-        producer.directSend(testStr);
     }
 
 }

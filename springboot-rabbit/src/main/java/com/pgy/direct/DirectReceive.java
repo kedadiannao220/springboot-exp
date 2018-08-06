@@ -16,19 +16,28 @@ import com.pgy.RabbitConstant;
 public class DirectReceive {
     @RabbitListener(queues = RabbitConstant.DIRECT_QUEUE)
     public void directReceive1(String object) {
-        System.out.println("direct exchange receive..." + JSON.toJSONString(object));
+        System.out.println("direct queue receive..." + JSON.toJSONString(object));
     }
 
     @RabbitListener(queues = RabbitConstant.DIRECT_QUEUE)
     public void directReceive2(Message object) {
-        String str = new String(object.getBody());
-        System.out.println(str.getBytes().length);
+        System.out.println("direct queue receive..." + JSON.toJSONString(object));
+
     }
 
-    @RabbitListener(queues = "${rabbitmq.queue.name}")
-    public void directReceive3(Message object) {
-        String str = new String(object.getBody());
-        System.out.println(str.getBytes().length);
+    @RabbitListener(queues = RabbitConstant.HASH_0_QUEUE)
+    public void directHash0Receive(Message object) {
+        System.out.println("hash0Queue receive---------------- " + new String(object.getBody()));
+    }
+
+    @RabbitListener(queues = RabbitConstant.HASH_1_QUEUE)
+    public void directHash1Receive(Message object) {
+        System.out.println("hash1Queue receive---------------- " + new String(object.getBody()));
+    }
+
+    @RabbitListener(queues = RabbitConstant.HASH_2_QUEUE)
+    public void directHash2Receive(Message object) {
+        System.out.println("hash2Queue receive---------------- " + new String(object.getBody()));
     }
 
 }

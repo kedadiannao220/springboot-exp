@@ -34,4 +34,30 @@ public class DirectSend {
         rabbitTemplate.convertAndSend(directExchange.getName(), RabbitConstant.ROUTING_KEY, object);
     }
 
+    /**
+     * 将message 进行hash处理
+     * @param object
+     * @param hashStr
+     */
+    public void hashMsgSender(Object object, String hashStr) {
+        switch (hashStr.hashCode() % 3) {
+            case 0:
+                System.out.println("hash0Queue sender---------------- " + object);
+                rabbitTemplate.convertAndSend(directExchange.getName(),
+                    RabbitConstant.HASH_0_ROUTING, object);
+                break;
+            case 1:
+                System.out.println("hash1Queue sender---------------- " + object);
+
+                rabbitTemplate.convertAndSend(directExchange.getName(),
+                    RabbitConstant.HASH_1_ROUTING, object);
+                break;
+            default:
+                System.out.println("hash2Queue sender---------------- " + object);
+                rabbitTemplate.convertAndSend(directExchange.getName(),
+                    RabbitConstant.HASH_2_ROUTING, object);
+
+        }
+    }
+
 }
