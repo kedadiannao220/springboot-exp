@@ -39,5 +39,15 @@ public class DirectReceive {
     public void directHash2Receive(Message object) {
         System.out.println("hash2Queue receive---------------- " + new String(object.getBody()));
     }
+//
+//    @RabbitListener(queues = RabbitConstant.DELAY_QUEUE)
+//    public void delayReceive(Message object) {
+//        System.out.println("delayQueue receive---------------- " + new String(object.getBody()));
+//    }
+
+    @RabbitListener(queues = RabbitConstant.DLX_QUEUE)
+    public void dlxReceive(Message object) {
+        System.out.println("dlxQueue receive---------------- " + new String(object.getBody()));
+    }
 
 }

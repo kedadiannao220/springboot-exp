@@ -14,7 +14,8 @@
         <module>springboot-rabbit-gather</module>
         <module>springboot-rabbit-webstomp</module>
         <module>springboot-akka</module>
-        <module>springbootfreemarker</module>
+        <module>springboot-freemarker</module>
+        <module>rabbit-native</module>
     </modules>
 
 
@@ -29,6 +30,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <rabbitmq.amqp.client.version>4.1.0</rabbitmq.amqp.client.version>
+        <alibaba.fastjson.version>1.2.31</alibaba.fastjson.version>
+        <junit.version>4.12</junit.version>
         <java.version>1.8</java.version>
     </properties>
 
@@ -47,12 +51,19 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.31</version>
+            <version>${alibaba.fastjson.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>${rabbitmq.amqp.client.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

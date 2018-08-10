@@ -57,22 +57,22 @@ public class MQConn {
         Channel channel = getChannel();
 
         Map<String, Object> queueArgs = new HashMap<String, Object>();
-        queueArgs.put("x-max-priority", 10);
-        channel.queueDeclare("my-priority-queue", true, false, false, queueArgs);
+        queueArgs.put("x-max-sender", 10);
+        channel.queueDeclare("my-sender-queue", true, false, false, queueArgs);
 
         // 投递优先级消息
-        String msg = "msg-priority-";
+        String msg = "msg-sender-";
         AMQP.BasicProperties.Builder builder = new AMQP.BasicProperties.Builder();
         for (int i = 0; i < 20;) {
             builder.priority(i);
             AMQP.BasicProperties properties = builder.build();
-            channel.basicPublish("", "my-priority-queue", properties, (msg + i).getBytes());
+            channel.basicPublish("", "my-sender-queue", properties, (msg + i).getBytes());
             i = i + 2;
         }
 
         // 创建消费者
         channel.basicQos(1);
-        channel.basicConsume("my-priority-queue", new DefaultConsumer(channel) {
+        channel.basicConsume("my-sender-queue", new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope,
                                        AMQP.BasicProperties properties,
@@ -91,7 +91,7 @@ public class MQConn {
 
     public void receive() {
         Map<String, Object> args = new HashMap<String, Object>();
-        args.put("x-max-priority", 10);
+        args.put("x-max-sender", 10);
         Channel channel = getChannel();
         try {
             channel.queueDeclare("rabbitmq.queue.direct", false, false, false, args);

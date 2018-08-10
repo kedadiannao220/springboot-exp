@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.UUID;
-
 /**
  * @author admin
  * @version V1.0 31/05/2018 admin Exp $
@@ -16,31 +14,20 @@ import java.util.UUID;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class DirectTest {
+public class DlxTest {
 
     @Autowired
     private DirectSend directSend;
 
     @Test
-    public void directExchangeSend() {
-        directSend.directExchangeSend();
-    }
+    public void ttlDlxTest() {
+        directSend.ttlSend("hello ttl && dlx");
 
-    /**
-     * 1kw条数据
-     */
-    @Test
-    public void directSend() {
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 1000000; i++) {
-            sb.append(UUID.randomUUID().toString());
-            sb.append(",");
+        // 由于设置message ttl为10s，所以设置Test线程停留11s，保证dlx queue可以收到消息
+        try {
+            Thread.sleep(11000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        sb.deleteCharAt(sb.length()-1);
-        String testStr = sb.toString();
-
-        directSend.directSend(testStr);
     }
-
 }

@@ -8,6 +8,9 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author admin
  * @version V1.0 06/06/2018 admin Exp $
@@ -37,8 +40,34 @@ public class DirectConfig {
     }
 
     @Bean
-    public DirectExchange exchange() {
+    Queue delayQueue() {
+        Map<String, Object> param = new HashMap<>(2);
+        param.put("x-dead-letter-exchange", RabbitConstant.DEAD_LETTER_EXCHANGE);
+        // message ttl time 单位ms
+        param.put("x-message-ttl", 10000);
+        // queue ttl time 单位ms
+
+        return new Queue(RabbitConstant.DELAY_QUEUE, true, false, false, param);
+    }
+
+    @Bean
+    Queue dlxQueue() {
+        return new Queue(RabbitConstant.DLX_QUEUE, true, false, false, null);
+    }
+
+    @Bean
+    public DirectExchange directExchange() {
         return new DirectExchange(RabbitConstant.DIRE_EXCHANGE);
+    }
+
+    @Bean
+    public DirectExchange deadLetterExchange() {
+        return new DirectExchange(RabbitConstant.DEAD_LETTER_EXCHANGE, true, false);
+    }
+
+    @Bean
+    public DirectExchange delayExchange() {
+        return new DirectExchange(RabbitConstant.DELAY_EXCHANGE, true, false);
     }
 
     @Bean
@@ -62,6 +91,16 @@ public class DirectConfig {
     public Binding directBindHash2Queue(Queue hash2Queue, DirectExchange directExchange) {
         return BindingBuilder.bind(hash2Queue).to(directExchange)
             .with(RabbitConstant.HASH_2_ROUTING);
+    }
+
+    @Bean
+    public Binding delayBind(Queue delayQueue, DirectExchange delayExchange) {
+        return BindingBuilder.bind(delayQueue).to(delayExchange).with("");
+    }
+
+    @Bean
+    public Binding dlxBind(Queue dlxQueue, DirectExchange deadLetterExchange) {
+        return BindingBuilder.bind(dlxQueue).to(deadLetterExchange).with("");
     }
 
 }
